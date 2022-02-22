@@ -1,0 +1,28 @@
+{
+  "name": "in6bv_ventaonline",
+  "version": "1.0.0",
+  "description": "Proyecto sobre venta online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plancerio2020255/in6bv_ventaOnline.git"
+  },
+  "author": "Pedro Lancerio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plancerio2020255/in6bv_ventaOnline/issues"
+  },
+  "homepage": "https://github.com/plancerio2020255/in6bv_ventaOnline#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.1",
+    "mongoose": "^6.2.3",
+    "nodemon": "^2.0.15"
+  }
+}
