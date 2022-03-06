@@ -17,18 +17,28 @@ function crearAdminOnlyOne(req, res) {
             console.log('El usuario admin solo puede ser una vez'); 
         }else {
             bcrypt.hash('123456', null,  null, (err, passwordEncriptada)=>{
-                AdminGlobal.nombreEmpresa = 'Admin';
-                AdminGlobal.usuario = 'Admin';
-                AdminGlobal.password = passwordEncriptada;
-                AdminGlobal.rol = 'Admin';
-                AdminGlobal.save((err, usuarioGuardado) => {
-                    if (err) return res.status(500)
-                    .send({ mensaje: 'Error en la peticion' });
-                if(!usuarioGuardado) return res.status(500)
-                    .send({ mensaje: 'Error al agregar el Usuario'});
+                if(err) {
+                    res.status(500).send({mensaje: 'Error en la peticion'})
+                } else if(passwordEncriptada) {
+
+                    AdminGlobal.nombreEmpresa = 'Admin';
+                    AdminGlobal.usuario = 'Admin';
+                    AdminGlobal.password = passwordEncriptada;
+                    AdminGlobal.rol = 'Admin';
+                    AdminGlobal.save((err, usuarioGuardado) => {
+                        if (err) {
+                            return res.status(500)
+                        .send({ mensaje: 'Error en la peticion' });
+                        } else if(usuarioGuardado) {
+                            console.log('Administrador creado');
+                        } else {
+                            console.log('Error al crearlo')
+                        }
+                    
+                    })
+                }
                 
-                return res.status(200).send({ usuario: usuarioGuardado });
-                })
+                
             })
         }
     })
@@ -40,8 +50,8 @@ function crearAdminOnlyOne(req, res) {
 function Login(req, res) {
     let parametros = req.body;
 
-    if (parametros.username && parametros.password) {
-        Company.findOne({ usuario: parametros.usuario}, (err, usuarioEncontrado) => {
+    if (parametros.usuario && parametros.password) {
+        Empresas.findOne({ usuario: parametros.usuario}, (err, usuarioEncontrado) => {
             if (err) {
                 res.status(500).send({ mensaje: 'Error en la peticion' })
             } else if (usuarioEncontrado) {
@@ -143,11 +153,40 @@ function eliminarEmpresa(req, res) {
 
 }
 
+function encontrarEmpresas(req, res) {
+    Empresas.find({}).exec((err, empresas) => {
+        if(err) {
+            res.status(500).send({mensaje :'Error en la peticion'})
+        } else if(empresas) {
+            res.send({mensaje: 'Los datos no coinciden con ninguna empresa'})
+        } else{
+            res.send({mensaje : 'No hay registros'});
+        }
+    })
+}
+
+function encontrarEmpresa(req,res){
+    const empresaId = req.params.id;
+
+    Empresas.findById(empresaId).exec((err, empresa) =>{
+        if(err) res.status(500).send({mensaje: 'Error en la peticions'});
+        if(empresa) {
+            res.send({mensaje : 'Empresa encontrada'})
+        } else {
+            res.send({mensaje: 'Empresa no encontrada'})
+        }
+    }) 
+}
+
+
+
 
 module.exports = {
     crearAdminOnlyOne,
     Login,
     agregarEmpresa,
     editarEmpresa,
-    eliminarEmpresa
+    eliminarEmpresa,
+    encontrarEmpresa,
+    encontrarEmpresas
 }

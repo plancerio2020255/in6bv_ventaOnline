@@ -25,22 +25,3 @@ exports.Auth = function(req, res, next) {
     next();
 }
 
-exports.ensureAuthAdministrator = (req, res, next) => {
-    let payload = req.user;
-
-    if (payload.role != 'Admin') {
-        return res.status(404).send({ mensaje: 'No tienes permisos suficientes para entrar a esta ruta' })
-    } else {
-        return next();
-    }
-}
-
-exports.ensureAuthCompany = (req, res, next) => {
-    let payload = req.user;
-
-    if (payload.role != 'Empresa') {
-        return res.status(404).send({ mensaje: 'No tienes permisos suficientes para entrar a esta ruta' })
-    } else {
-        return next();
-    }
-}
