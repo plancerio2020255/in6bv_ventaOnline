@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            width: 100%;
+            background-color: rgb(211, 207, 207);
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ebe5e5;
+        }
+
+        td {
+            border: solid 1px #ddd;
+            padding: 8px;
+        }
+
+        th {
+            padding: 15px;
+            color: #eee;
+            background-color: #af984c;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 85%; margin: 0 7.5%;">
+        <div style="text-align: center;">
+            <h3>Reporte de empleados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Puesto</th>
+                        <th>Departamento</th>
+                    </tr>
+                </thead>
+
+                <% if (empleados.length> 0) { %>
+                    <% empleados.forEach(empleado=> {%>
+                        <tr>
+                            <td>
+                                <%= empleado._id %>
+                            </td>
+                            <td>
+                                <%= empleado.nombre %>
+                            </td>
+                            <td>
+                                <%= empleado.puesto %>
+                            </td>
+                            <td>
+                                <%= empleado.departamento %>
+                            </td>
+                        </tr>
+                        <% });%>
+                            <% }%>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

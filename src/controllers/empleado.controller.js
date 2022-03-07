@@ -42,7 +42,7 @@ function agregarEmpleado(req,res) {
     }
 }
 
-function encontrarEmpleados(req,res) {
+function buscarEmpleados(req,res) {
     const empresaId = req.params.idEmpresa;
 
     if (empresaId == req.user.sub) {
@@ -140,7 +140,7 @@ function buscarEmpleadosPorID(req,res) {
 
 module.exports = {
     agregarEmpleado,
-    encontrarEmpleados,
+    buscarEmpleados,
     editarEmpleado,
     eliminarEmpleados,
     buscarEmpleadosPorID
