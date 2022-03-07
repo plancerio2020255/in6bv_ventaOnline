@@ -96,9 +96,9 @@ function agregarEmpresa(req,res) {
             if ( usuarioEncontrado.length == 0 ) {
 
                 bcrypt.hash(parametros.password, null, null, (err, passwordEncriptada) => {
-                    usuarioModel.password = passwordEncriptada;
+                    empresa.password = passwordEncriptada;
 
-                    usuarioModel.save((err, usuarioGuardado) => {
+                    empresa.save((err, usuarioGuardado) => {
                         if (err) return res.status(500)
                             .send({ mensaje: 'Error en la peticion' });
                         if(!usuarioGuardado) return res.status(500)
@@ -119,31 +119,31 @@ function agregarEmpresa(req,res) {
 
 function editarEmpresa(req, res) {
     const usuarioID = req.params.rol;
-    const editar = req.body;
+    const parametros = req.body;
 
-    if(usuarioID !== 'Admin') {
-        return res.status(500)
-        .send({ mensaje: 'No tienes permisos suficientes, contactate con un administrador'});
-    }else{
-        Empresas.findByIdAndUpdate(req.user.sub, editar, {new:true}, 
-            (err, empresaActualizada) =>{
-                if(err) return res.status(500)
-                .send({mensaje: 'Error en la peticion'});
-                if(!empresaActualizada) return res.status(500)
-                .send({mensaje: 'Error al editar empresa'});
+    if (req.user.rol !== 'Admin') return res.status(500)
+        .send({ mensaje: 'Solo el admin puede editar' });
 
-                return res.status(200).send({empresa: empresaActualizada})
+    delete parametros.password
+
+    Empresas.findByIdAndUpdate(req.params.idEmpresa, parametros, { new: true },
+        (err, empresaActualizada) => {
+            if (err) return res.status(500)
+                .send({ mensaje: 'Error en la peticion' });
+            if (!empresaActualizada) return res.status(500)
+                .send({ mensaje: 'Error al editar el Usuario' });
+
+            return res.status(200).send({ empresa: empresaActualizada })
         })
-    }
     
 }
 
 // Eliminar Empresas
 
 function eliminarEmpresa(req, res) {
-    const usuarioID = req.params.idEmpresa;
+    const idEmpresa = req.params.idEmpresa;
 
-    Empresas.findByIdAndDelete(usuarioID, (err, empresaEliminada)=>{
+    Empresas.findByIdAndDelete(idEmpresa, (err, empresaEliminada)=>{
         if(err) return res.status(500).send({ mensaje: 'Error en la peticion' });
         if(!empresaEliminada) return res.status(500)
             .send({ mensaje: 'Error al eliminar la empresa' })
